@@ -1,14 +1,9 @@
-import {PromoMovie} from './PromoMovie';
+import { PromoMovie } from './PromoMovie';
 
 export type AppProps = {
-  homePageProps: HomePageProps;
-}
+	homePageProps: HomePageProps;
+};
 
 export type HomePageProps = {
-  promoMovie: PromoMovie;
-}
-
-export type MovieCardProps = {
-  title: string;
-  path: string;
-}
+	promoMovie: PromoMovie;
+};
