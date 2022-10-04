@@ -23,7 +23,21 @@
   color: #c9b37e;
 }
 
+@keyframes opacity-transition {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  25% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .error-section {
+  animation: opacity-transition 500ms ease-out;
   user-select: none;
   max-width: 720px;
   text-align: center;

@@ -1,58 +1,45 @@
-import MovieCard from '../../components/movie-card/movie-card';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Films from '../../types/Films';
+import NotFoundPage from '../not-found-page/not-found-page';
+import PageHeader from '../../components/page-header/page-header';
+import FilmsList from '../../components/films-list/films-list';
+import PageFooter from '../../components/page-footer/page-footer';
+import ratingConverter from '../../utils/rating-converter';
 
-function MoviePage(): JSX.Element {
+function MoviePage({ films }: { films: Films }): JSX.Element {
+  const id = Number(useParams().id);
+  const film = films.find((currentFilm) => currentFilm.id === id);
+
+  const remainingFilms = films.slice();
+  remainingFilms.splice(id - 1, 1);
+
+  if (!film) {
+    return <NotFoundPage />;
+  }
+
   return (
     <>
       <section className='film-card film-card--full'>
         <div className='film-card__hero'>
           <div className='film-card__bg'>
-            <img
-              src='img/bg-the-grand-budapest-hotel.jpg'
-              alt='The Grand Budapest Hotel'
-            />
+            <img src={film.backgroundImage} alt={film.name} />
           </div>
 
           <h1 className='visually-hidden'>WTW</h1>
 
-          <header className='page-header film-card__head'>
-            <div className='logo'>
-              <Link to='/' className='logo__link'>
-                <span className='logo__letter logo__letter--1'>W</span>
-                <span className='logo__letter logo__letter--2'>T</span>
-                <span className='logo__letter logo__letter--3'>W</span>
-              </Link>
-            </div>
-
-            <ul className='user-block'>
-              <li className='user-block__item'>
-                <div className='user-block__avatar'>
-                  <img
-                    src='img/avatar.jpg'
-                    alt='User avatar'
-                    width='63'
-                    height='63'
-                  />
-                </div>
-              </li>
-              <li className='user-block__item'>
-                <a href='/#' className='user-block__link'>
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </header>
+          <PageHeader />
 
           <div className='film-card__wrap'>
             <div className='film-card__desc'>
-              <h2 className='film-card__title'>The Grand Budapest Hotel</h2>
+              <h2 className='film-card__title'>{film.name}</h2>
               <p className='film-card__meta'>
-                <span className='film-card__genre'>Drama</span>
-                <span className='film-card__year'>2014</span>
+                <span className='film-card__genre'>{film.genre}</span>
+                <span className='film-card__year'>{film.released}</span>
               </p>
 
               <div className='film-card__buttons'>
-                <button
+                <Link
+                  to={`/player/${id}`}
                   className='btn btn--play film-card__button'
                   type='button'
                 >
@@ -60,20 +47,24 @@ function MoviePage(): JSX.Element {
                     <use xlinkHref='#play-s'></use>
                   </svg>
                   <span>Play</span>
-                </button>
-                <button
+                </Link>
+                <Link
                   className='btn btn--list film-card__button'
                   type='button'
+                  to={'/mylist'}
                 >
                   <svg viewBox='0 0 19 20' width='19' height='20'>
                     <use xlinkHref='#add'></use>
                   </svg>
                   <span>My list</span>
                   <span className='film-card__count'>9</span>
-                </button>
-                <a href='add-review.html' className='btn film-card__button'>
+                </Link>
+                <Link
+                  to={`/films/${id}/review`}
+                  className='btn film-card__button'
+                >
                   Add review
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -83,8 +74,8 @@ function MoviePage(): JSX.Element {
           <div className='film-card__info'>
             <div className='film-card__poster film-card__poster--big'>
               <img
-                src='img/the-grand-budapest-hotel-poster.jpg'
-                alt='The Grand Budapest Hotel poster'
+                src={film.posterImage}
+                alt={`${film.name} poster`}
                 width='218'
                 height='327'
               />
@@ -112,39 +103,24 @@ function MoviePage(): JSX.Element {
               </nav>
 
               <div className='film-rating'>
-                <div className='film-rating__score'>8,9</div>
+                <div className='film-rating__score'>{film.rating}</div>
                 <p className='film-rating__meta'>
-                  <span className='film-rating__level'>Very good</span>
-                  <span className='film-rating__count'>240 ratings</span>
+                  <span className='film-rating__level'>
+                    {ratingConverter(film.rating)}
+                  </span>
+                  <span className='film-rating__count'>{`${film.scoresCount} ratings`}</span>
                 </p>
               </div>
 
               <div className='film-card__text'>
-                <p>
-                  In the 1930s, the Grand Budapest Hotel is a popular European
-                  ski resort, presided over by concierge Gustave H. (Ralph
-                  Fiennes). Zero, a junior lobby boy, becomes Gustave&quot;s
-                  friend and protege.
-                </p>
-
-                <p>
-                  Gustave prides himself on providing first-class service to the
-                  hotel&quot;s guests, including satisfying the sexual needs of
-                  the many elderly women who stay there. When one of
-                  Gustave&quot;s lovers dies mysteriously, Gustave finds himself
-                  the recipient of a priceless painting and the chief suspect in
-                  her murder.
-                </p>
+                <p>{film.description}</p>
 
                 <p className='film-card__director'>
-                  <strong>Director: Wes Anderson</strong>
+                  <strong>Director: {film.director}</strong>
                 </p>
 
                 <p className='film-card__starring'>
-                  <strong>
-                    Starring: Bill Murray, Edward Norton, Jude Law, Willem Dafoe
-                    and other
-                  </strong>
+                  <strong>Starring: {film.starring.join(', ')}</strong>
                 </p>
               </div>
             </div>
@@ -156,36 +132,10 @@ function MoviePage(): JSX.Element {
         <section className='catalog catalog--like-this'>
           <h2 className='catalog__title'>More like this</h2>
 
-          <div className={'catalog__films-list'}>
-            <MovieCard
-              title={'Fantastic Beasts: The Crimes of Grindelwald'}
-              path={'img/fantastic-beasts-the-crimes-of-grindelwald.jpg'}
-            />
-
-            <MovieCard
-              title={'Bohemian Rhapsody'}
-              path={'img/bohemian-rhapsody.jpg'}
-            />
-
-            <MovieCard title={'Macbeth'} path={'img/macbeth.jpg'} />
-
-            <MovieCard title={'Aviator'} path={'img/aviator.jpg'} />
-          </div>
+          <FilmsList films={remainingFilms} amountToShow={4} />
         </section>
 
-        <footer className='page-footer'>
-          <div className='logo'>
-            <a href='main.html' className='logo__link logo__link--light'>
-              <span className='logo__letter logo__letter--1'>W</span>
-              <span className='logo__letter logo__letter--2'>T</span>
-              <span className='logo__letter logo__letter--3'>W</span>
-            </a>
-          </div>
-
-          <div className='copyright'>
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <PageFooter />
       </div>
     </>
   );

@@ -15,18 +15,21 @@ function App(props: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<HomePage {...props.homePageProps} />} />
-        <Route path={'films/:id'} element={<MoviePage />} />
-        <Route path={'films/:id/review'} element={<ReviewPage />} />
+        <Route
+          index
+          element={<HomePage homePageProps={props.homePageProps} films={props.films}/>}
+        />
+        <Route path={'films/:id'} element={<MoviePage films={props.films} />} />
+        <Route path={'films/:id/review'} element={<ReviewPage films={props.films} />} />
         <Route
           path={'mylist'}
           element={
             <PrivateRoute hasAccess={false}>
-              <MyListPage />
+              <MyListPage films={props.films} />
             </PrivateRoute>
           }
         />
-        <Route path={'player/:id'} element={<Player />} />
+        <Route path={'player/:id'} element={<Player films={props.films} />} />
         <Route path={'login'} element={<LoginPage />} />
         <Route path={'*'} element={<NotFoundPage />} />
       </Routes>
