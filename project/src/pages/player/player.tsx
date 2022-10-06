@@ -1,15 +1,29 @@
-function Player(): JSX.Element {
+import Films from '../../types/Films';
+import { useNavigate, useParams } from 'react-router-dom';
+
+function Player({ films }: { films: Films }): JSX.Element {
+  const id = Number(useParams().id);
+  const film = films.find((currentFilm) => currentFilm.id === id) ?? films[0];
+
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className='player'>
         <video
-          src='#'
+          src={film.videoLink}
           className='player__video'
-          poster='img/player-poster.jpg'
+          poster={film.backgroundImage}
         >
         </video>
 
-        <button type='button' className='player__exit'>
+        <button
+          type='button'
+          className='player__exit'
+          onClick={() => {
+            navigate(`/films/${id}`);
+          }}
+        >
           Exit
         </button>
 
