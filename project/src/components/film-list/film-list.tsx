@@ -3,7 +3,7 @@ import { Film } from '../../types/Film';
 import Films from '../../types/Films';
 import { useState } from 'react';
 
-function FilmsList({
+function FilmList({
   films,
   amountToShow
 }: {
@@ -26,12 +26,14 @@ function FilmsList({
           id={film.id}
           title={film.name}
           poster={film.posterImage}
-          hoverHandler={() => changeActiveCard(film.id)}
-          outHandler={() => changeActiveCard(-1)}
+          videoPreview={film.previewVideoLink}
+          isMouseOver={activeCard === film.id}
+          mouseOverHandler={() => changeActiveCard(film.id)}
+          mouseOutHandler={() => changeActiveCard(-1)}
         />
       ))}
     </div>
   );
 }
 
-export default FilmsList;
+export default FilmList;
