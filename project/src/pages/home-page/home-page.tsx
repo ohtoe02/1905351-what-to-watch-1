@@ -1,6 +1,6 @@
 import PromoFilmCard from '../../components/promo-film-card/promo-film-card';
 import PageFooter from '../../components/page-footer/page-footer';
-import FilmsList from '../../components/films-list/films-list';
+import FilmList from '../../components/film-list/film-list';
 import { HomePageProps } from '../../types/Props';
 import Films from '../../types/Films';
 
@@ -72,7 +72,7 @@ function HomePage({
             </li>
           </ul>
 
-          <FilmsList films={films} amountToShow={8} />
+          <FilmList films={films} amountToShow={8} />
 
           <div className='catalog__more'>
             <button className='catalog__button' type='button'>
