@@ -4,18 +4,23 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import PageHeader from '../../components/page-header/page-header';
 import FilmList from '../../components/film-list/film-list';
 import PageFooter from '../../components/page-footer/page-footer';
-import ratingConverter from '../../utils/rating-converter';
+import MovieTabs from '../../components/movie-tabs/movie-tabs';
+import { useState } from 'react';
+import { MoviePageTabs } from '../../utils/constants';
+import MovieInformation from '../../components/movie-information/movie-information';
 
 function MoviePage({ films }: { films: Films }): JSX.Element {
+  const [currentTab, setCurrentTab] = useState(MoviePageTabs[0]);
   const id = Number(useParams().id);
   const film = films.find((currentFilm) => currentFilm.id === id);
-
-  const remainingFilms = films.slice();
-  remainingFilms.splice(id - 1, 1);
 
   if (!film) {
     return <NotFoundPage />;
   }
+
+  const similarFilms = films.filter(
+    (item) => item.genre === film.genre && item.id !== film.id
+  );
 
   return (
     <>
@@ -82,47 +87,9 @@ function MoviePage({ films }: { films: Films }): JSX.Element {
             </div>
 
             <div className='film-card__desc'>
-              <nav className='film-nav film-card__nav'>
-                <ul className='film-nav__list'>
-                  <li className='film-nav__item film-nav__item--active'>
-                    <a href='/#' className='film-nav__link'>
-                      Overview
-                    </a>
-                  </li>
-                  <li className='film-nav__item'>
-                    <a href='/#' className='film-nav__link'>
-                      Details
-                    </a>
-                  </li>
-                  <li className='film-nav__item'>
-                    <a href='/#' className='film-nav__link'>
-                      Reviews
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+              <MovieTabs currentTab={currentTab} updateTab={setCurrentTab} />
 
-              <div className='film-rating'>
-                <div className='film-rating__score'>{film.rating}</div>
-                <p className='film-rating__meta'>
-                  <span className='film-rating__level'>
-                    {ratingConverter(film.rating)}
-                  </span>
-                  <span className='film-rating__count'>{`${film.scoresCount} ratings`}</span>
-                </p>
-              </div>
-
-              <div className='film-card__text'>
-                <p>{film.description}</p>
-
-                <p className='film-card__director'>
-                  <strong>Director: {film.director}</strong>
-                </p>
-
-                <p className='film-card__starring'>
-                  <strong>Starring: {film.starring.join(', ')}</strong>
-                </p>
-              </div>
+              <MovieInformation currentTab={currentTab} film={film} />
             </div>
           </div>
         </div>
@@ -132,7 +99,7 @@ function MoviePage({ films }: { films: Films }): JSX.Element {
         <section className='catalog catalog--like-this'>
           <h2 className='catalog__title'>More like this</h2>
 
-          <FilmList films={remainingFilms} amountToShow={4} />
+          <FilmList films={similarFilms} amountToShow={4} />
         </section>
 
         <PageFooter />

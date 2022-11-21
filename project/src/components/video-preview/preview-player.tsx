@@ -15,7 +15,7 @@ function PreviewPlayer({
   }, []);
 
   return (
-    <video ref={videoRef} poster={poster} width='280' height='175' loop muted>
+    <video ref={videoRef} poster={poster} width='280' height='175' loop muted style={{objectFit: 'cover'}}>
       <source src={videoPreview} />
       Video is not supported by your browser.
     </video>
