@@ -17,7 +17,7 @@ function App(props: AppProps): JSX.Element {
       <Routes>
         <Route
           index
-          element={<HomePage homePageProps={props.homePageProps} films={props.films}/>}
+          element={<HomePage homePageProps={props.homePageProps} />}
         />
         <Route path={'films/:id'} element={<MoviePage films={props.films} />} />
         <Route path={'films/:id/review'} element={<ReviewPage films={props.films} />} />
@@ -25,7 +25,7 @@ function App(props: AppProps): JSX.Element {
           path={'mylist'}
           element={
             <PrivateRoute hasAccess={false}>
-              <MyListPage films={props.films} />
+              <MyListPage />
             </PrivateRoute>
           }
         />
