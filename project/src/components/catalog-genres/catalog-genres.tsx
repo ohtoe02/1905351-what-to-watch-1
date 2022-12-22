@@ -1,4 +1,4 @@
-import { changeGenre, filterByGenre } from '../../store/action';
+import { changeGenre } from '../../store/action';
 import { getAllGenres } from '../../utils/get-all-film-genres';
 import { DEFAULT_GENRE } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -18,7 +18,6 @@ function CatalogGenres(): JSX.Element {
   ) => {
     evt.preventDefault();
     dispatch(changeGenre({ currentGenre: genre }));
-    dispatch(filterByGenre());
     setCurrentGenre(genre);
   };
 
