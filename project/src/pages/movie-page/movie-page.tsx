@@ -2,12 +2,12 @@ import { Link, useParams } from 'react-router-dom';
 import Films from '../../types/Films';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PageHeader from '../../components/page-header/page-header';
-import FilmList from '../../components/film-list/film-list';
 import PageFooter from '../../components/page-footer/page-footer';
 import MovieTabs from '../../components/movie-tabs/movie-tabs';
 import { useState } from 'react';
 import { MoviePageTabs } from '../../utils/constants';
 import MovieInformation from '../../components/movie-information/movie-information';
+import SimilarFilmList from '../../components/similar-film-list/similar-film-list';
 
 function MoviePage({ films }: { films: Films }): JSX.Element {
   const [currentTab, setCurrentTab] = useState(MoviePageTabs[0]);
@@ -99,7 +99,7 @@ function MoviePage({ films }: { films: Films }): JSX.Element {
         <section className='catalog catalog--like-this'>
           <h2 className='catalog__title'>More like this</h2>
 
-          <FilmList films={similarFilms} amountToShow={4} />
+          <SimilarFilmList similarFilms={similarFilms} />
         </section>
 
         <PageFooter />

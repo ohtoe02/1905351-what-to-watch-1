@@ -14,3 +14,5 @@ export const MonthNames = [
   'November',
   'December'
 ];
+
+export const DEFAULT_GENRE = 'All genres';
