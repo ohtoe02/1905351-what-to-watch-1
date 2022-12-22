@@ -1,4 +1,6 @@
 import { MoviePageTabs } from '../../utils/constants';
+import { changeFilmTab } from '../../store/action';
+import { useAppDispatch } from '../../hooks';
 
 type MovieTabsProps = {
   currentTab: string;
@@ -6,6 +8,7 @@ type MovieTabsProps = {
 };
 
 function MovieTabs({ currentTab, updateTab }: MovieTabsProps): JSX.Element {
+  const dispatch = useAppDispatch();
   return (
     <nav className='film-nav film-card__nav'>
       <ul className='film-nav__list'>
@@ -21,6 +24,7 @@ function MovieTabs({ currentTab, updateTab }: MovieTabsProps): JSX.Element {
               className='film-nav__link'
               onClick={(evt) => {
                 evt.preventDefault();
+                dispatch(changeFilmTab({ currentTab: tab }));
                 updateTab(tab);
               }}
             >

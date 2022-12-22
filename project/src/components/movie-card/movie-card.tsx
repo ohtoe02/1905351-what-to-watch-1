@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { MouseEvent } from 'react';
 import PreviewPlayer from '../video-preview/preview-player';
+import { useAppDispatch } from '../../hooks';
+import { resetHomeScreen } from '../../store/action';
 
 type MovieCardProps = {
   id: number;
@@ -21,6 +23,7 @@ function MovieCard({
   mouseOutHandler,
   isMouseOver
 }: MovieCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
   return (
     <article
       className='small-film-card catalog__films-card'
@@ -35,7 +38,13 @@ function MovieCard({
         )}
       </div>
       <h3 className='small-film-card__title'>
-        <Link to={`/films/${id}`} className='small-film-card__link'>
+        <Link
+          to={`/films/${id}`}
+          className='small-film-card__link'
+          onClick={() => {
+            dispatch(resetHomeScreen);
+          }}
+        >
           {title}
         </Link>
       </h3>

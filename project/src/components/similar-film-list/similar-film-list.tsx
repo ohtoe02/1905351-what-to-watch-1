@@ -1,11 +1,10 @@
-import MovieCard from '../movie-card/movie-card';
 import { Film } from '../../types/Film';
+import MovieCard from '../movie-card/movie-card';
 import { useState } from 'react';
-import { useAppSelector } from '../../hooks';
+import Films from '../../types/Films';
 
-function FilmList(): JSX.Element {
+function SimilarFilmList({ similarFilms }: { similarFilms: Films }): JSX.Element {
   const [activeCard, setActiveCard] = useState(-1);
-  const films = useAppSelector((state) => state.shownFilms);
 
   const changeActiveCard = (filmId: number) => {
     if (activeCard !== filmId) {
@@ -15,7 +14,7 @@ function FilmList(): JSX.Element {
 
   return (
     <div className='catalog__films-list'>
-      {films.map((film: Film) => (
+      {similarFilms.map((film: Film) => (
         <MovieCard
           key={film.id}
           id={film.id}
@@ -31,4 +30,4 @@ function FilmList(): JSX.Element {
   );
 }
 
-export default FilmList;
+export default SimilarFilmList;
