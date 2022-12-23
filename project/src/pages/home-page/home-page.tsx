@@ -11,7 +11,6 @@ function HomePage({
   return (
     <>
       <PromoFilmCard promoFilm={homePageProps.promoFilm} />
-
       <div className='page-content'>
         <FilmList />
 

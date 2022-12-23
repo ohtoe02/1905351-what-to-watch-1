@@ -1,30 +1,55 @@
-import films from '../mocks/films';
 import { createReducer } from '@reduxjs/toolkit';
 import {
   changeFilmTab,
   changeGenre,
   increaseCardCount,
+  loadFilms,
+  requireAuthorization,
   resetCardCount,
   resetFilmScreen,
-  resetHomeScreen
+  resetHomeScreen,
+  setDataLoadedStatus,
+  setError
 } from './action';
 import { filterFilmsByGenre } from '../utils/filter-films-by-genre';
+import Films from '../types/Films';
+import {
+  AuthorizationStatus,
+  DEFAULT_GENRE,
+  MAX_CARDS_SHOWN
+} from '../utils/constants';
 
-const initState = {
-  currentGenre: '',
-  films,
-  filteredFilms: films,
-  cardCount: films.length < 8 ? films.length : 8,
+type InitialState = {
+  error: string | null;
+  films: Films;
+  cardCount: number;
+  filteredFilms: Films;
+  currentGenre: string;
+  isDataLoaded: boolean;
+  authorizationStatus: string;
+  filmPageTab: string;
+};
 
+const initState: InitialState = {
+  error: null,
+  films: [],
+  cardCount: 0,
+  filteredFilms: [],
+  currentGenre: DEFAULT_GENRE,
+  isDataLoaded: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
   filmPageTab: 'Overview'
 };
 
 export const reducer = createReducer(initState, (builder) => {
   builder
     .addCase(resetHomeScreen, (state) => {
-      state.currentGenre = 'Drama';
-      state.filteredFilms = films;
-      state.cardCount = films.length < 8 ? films.length : 8;
+      state.currentGenre = DEFAULT_GENRE;
+      state.filteredFilms = state.films;
+      state.cardCount =
+        state.films.length < MAX_CARDS_SHOWN
+          ? state.films.length
+          : MAX_CARDS_SHOWN;
     })
     .addCase(changeGenre, (state, action) => {
       const filteredFilms = filterFilmsByGenre(
@@ -34,22 +59,43 @@ export const reducer = createReducer(initState, (builder) => {
 
       state.currentGenre = action.payload.currentGenre;
       state.filteredFilms = filteredFilms;
-      state.cardCount = filteredFilms.length < 8 ? filteredFilms.length : 8;
+      state.cardCount =
+        filteredFilms.length < MAX_CARDS_SHOWN
+          ? filteredFilms.length
+          : MAX_CARDS_SHOWN;
     })
     .addCase(increaseCardCount, (state) => {
       state.cardCount =
-        state.cardCount + 8 < state.filteredFilms.length
-          ? state.cardCount + 8
+        state.cardCount + MAX_CARDS_SHOWN < state.filteredFilms.length
+          ? state.cardCount + MAX_CARDS_SHOWN
           : state.filteredFilms.length;
     })
     .addCase(resetCardCount, (state) => {
       state.cardCount =
-        state.filteredFilms.length < 8 ? state.filteredFilms.length : 8;
+        state.filteredFilms.length < MAX_CARDS_SHOWN
+          ? state.filteredFilms.length
+          : MAX_CARDS_SHOWN;
     })
     .addCase(resetFilmScreen, (state) => {
       state.filmPageTab = 'Overview';
     })
     .addCase(changeFilmTab, (state, action) => {
       state.filmPageTab = action.payload.currentTab;
+    })
+    .addCase(loadFilms, (state, action) => {
+      state.films = action.payload;
+      state.filteredFilms = action.payload;
+      state.cardCount = MAX_CARDS_SHOWN;
+    })
+    .addCase(setDataLoadedStatus, (state, action) => {
+      state.isDataLoaded = action.payload;
+    })
+
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });

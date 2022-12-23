@@ -1,8 +1,8 @@
-import { Film } from '../types/Film';
 import { DEFAULT_GENRE } from './constants';
+import Films from '../types/Films';
 
-export const filterFilmsByGenre = (films: Film[], genre: string) => {
-  if(genre === DEFAULT_GENRE) {
+export const filterFilmsByGenre = (films: Films, genre: string) => {
+  if (genre === DEFAULT_GENRE) {
     return films;
   }
 

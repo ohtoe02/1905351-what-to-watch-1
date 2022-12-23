@@ -1,11 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
 import ReviewForm from '../../components/review-form/review-form';
-import Films from '../../types/Films';
 import NotFoundPage from '../not-found-page/not-found-page';
+import { useAppSelector } from '../../hooks';
 
-function ReviewPage({ films }: { films: Films }): JSX.Element {
+function ReviewPage(): JSX.Element {
   const filmId = Number(useParams().id);
 
+  const films = useAppSelector((state) => state.filteredFilms);
   const film = films.find((currentFilm) => currentFilm.id === filmId);
 
   if (!film) {
@@ -33,7 +34,7 @@ function ReviewPage({ films }: { films: Films }): JSX.Element {
           <nav className='breadcrumbs'>
             <ul className='breadcrumbs__list'>
               <li className='breadcrumbs__item'>
-                <Link to={`films/${filmId}`} className='breadcrumbs__link'>
+                <Link to={`/films/${filmId}`} className='breadcrumbs__link'>
                   {film.name}
                 </Link>
               </li>
@@ -52,7 +53,7 @@ function ReviewPage({ films }: { films: Films }): JSX.Element {
             <li className='user-block__item'>
               <div className='user-block__avatar'>
                 <img
-                  src='img/avatar.jpg'
+                  src='https://10.react.pages.academy/static/avatar/3.jpg'
                   alt='User avatar'
                   width='63'
                   height='63'

@@ -3,7 +3,11 @@ import MovieCard from '../movie-card/movie-card';
 import { useState } from 'react';
 import Films from '../../types/Films';
 
-function SimilarFilmList({ similarFilms }: { similarFilms: Films }): JSX.Element {
+function SimilarFilmList({
+  similarFilms
+}: {
+  similarFilms: Films;
+}): JSX.Element {
   const [activeCard, setActiveCard] = useState(-1);
 
   const changeActiveCard = (filmId: number) => {
