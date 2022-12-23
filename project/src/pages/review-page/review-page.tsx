@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import ReviewForm from '../../components/review-form/review-form';
 import NotFoundPage from '../not-found-page/not-found-page';
 import { useAppSelector } from '../../hooks';
+import UserBlock from '../../components/user-block/user-block';
 
 function ReviewPage(): JSX.Element {
   const filmId = Number(useParams().id);
@@ -49,23 +50,7 @@ function ReviewPage(): JSX.Element {
             </ul>
           </nav>
 
-          <ul className='user-block'>
-            <li className='user-block__item'>
-              <div className='user-block__avatar'>
-                <img
-                  src='https://10.react.pages.academy/static/avatar/3.jpg'
-                  alt='User avatar'
-                  width='63'
-                  height='63'
-                />
-              </div>
-            </li>
-            <li className='user-block__item'>
-              <a href='/#' className='user-block__link'>
-                Sign out
-              </a>
-            </li>
-          </ul>
+          <UserBlock />
         </header>
 
         <div className='film-card__poster film-card__poster--small'>

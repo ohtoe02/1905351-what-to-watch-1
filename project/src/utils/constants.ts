@@ -1,5 +1,14 @@
 export const MoviePageTabs = ['Overview', 'Details', 'Reviews'];
 
+export enum AppRoute {
+  Home = '/',
+  Login = '/login',
+  MyList = '/mylist',
+  Film = '/films',
+  Review = '/review',
+  Player = '/player'
+}
+
 export const MonthNames = [
   'January',
   'February',
