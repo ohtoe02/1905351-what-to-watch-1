@@ -5,14 +5,15 @@ import LoginPage from '../../pages/login-page/login-page';
 import ReviewPage from '../../pages/review-page/review-page';
 import Player from '../../pages/player/player';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
-import { AppProps } from '../../types/Props';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import LoadingScreen from '../../pages/loading-page/loading-screen';
 import { isAuthenticated } from '../../utils/check-authentication';
 import { useAppSelector } from '../../hooks';
+import BackstackRouter from '../backstack-router/backstack-router';
+import browserHistory from '../../browser-history';
 
-function App(props: AppProps): JSX.Element {
+function App(): JSX.Element {
   const { authorizationStatus, isDataLoaded } = useAppSelector(
     (state) => state
   );
@@ -21,11 +22,11 @@ function App(props: AppProps): JSX.Element {
     return <LoadingScreen />;
   }
   return (
-    <BrowserRouter>
+    <BackstackRouter history={browserHistory}>
       <Routes>
         <Route
           index
-          element={<HomePage homePageProps={props.homePageProps} />}
+          element={<HomePage />}
         />
         <Route path={'films/:id'} element={<MoviePage />} />
         <Route path={'films/:id/review'} element={<ReviewPage />} />
@@ -41,7 +42,7 @@ function App(props: AppProps): JSX.Element {
         <Route path={'login'} element={<LoginPage />} />
         <Route path={'*'} element={<NotFoundPage />} />
       </Routes>
-    </BrowserRouter>
+    </BackstackRouter>
   );
 }
 

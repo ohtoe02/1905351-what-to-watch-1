@@ -1,6 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 import Films from '../types/Films';
-import { AppRoute, AuthorizationStatus } from '../utils/constants';
+import { AuthorizationStatus } from '../utils/constants';
+import { Comments } from '../types/Comments';
+import { Film } from '../types/Film';
 
 export const resetHomeScreen = createAction('main/resetState');
 export const resetFilmScreen = createAction('film/resetState');
@@ -21,4 +23,8 @@ export const setDataLoadedStatus = createAction<boolean>(
 );
 export const setError = createAction<string | null>('app/setError');
 export const setAvatar = createAction<string | null>('user/avatar');
-export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');
+export const redirectToRoute = createAction<string>('app/redirectToRoute');
+export const loadFilm = createAction<Film>('data/loadFilmById');
+export const loadPromo = createAction<Film>('main/loadPromoFilm');
+export const loadComments = createAction<Comments>('data/loadCommentsById');
+export const loadSimilar = createAction<Films>('data/loadSimilarById');

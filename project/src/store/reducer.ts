@@ -3,7 +3,10 @@ import {
   changeFilmTab,
   changeGenre,
   increaseCardCount,
-  loadFilms,
+  loadComments,
+  loadFilm,
+  loadFilms, loadPromo,
+  loadSimilar,
   requireAuthorization,
   resetCardCount,
   resetFilmScreen,
@@ -19,11 +22,17 @@ import {
   DEFAULT_GENRE,
   MAX_CARDS_SHOWN
 } from '../utils/constants';
+import { Comments } from '../types/Comments';
+import { Film } from '../types/Film';
 
 type InitialState = {
   error: string | null;
   avatar: string | null;
+  film: Film | null;
+  promoFilm: Film | null;
   films: Films;
+  similar: Films;
+  comments: Comments;
   cardCount: number;
   filteredFilms: Films;
   currentGenre: string;
@@ -35,7 +44,11 @@ type InitialState = {
 const initState: InitialState = {
   error: null,
   avatar: null,
+  film: null,
+  promoFilm: null,
   films: [],
+  similar: [],
+  comments: [],
   cardCount: 0,
   filteredFilms: [],
   currentGenre: DEFAULT_GENRE,
@@ -101,5 +114,22 @@ export const reducer = createReducer(initState, (builder) => {
     })
     .addCase(setAvatar, (state, action) => {
       state.avatar = action.payload;
+      if (state.avatar === null) {
+        localStorage.removeItem('avatar');
+      } else {
+        localStorage.setItem('avatar', state.avatar);
+      }
+    })
+    .addCase(loadPromo, (state, action) => {
+      state.promoFilm = action.payload;
+    })
+    .addCase(loadFilm, (state, action) => {
+      state.film = action.payload;
+    })
+    .addCase(loadComments, (state, action) => {
+      state.comments = action.payload;
+    })
+    .addCase(loadSimilar, (state, action) => {
+      state.similar = action.payload;
     });
 });

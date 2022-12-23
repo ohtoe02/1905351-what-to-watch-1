@@ -1,14 +1,30 @@
 import { Link, useParams } from 'react-router-dom';
 import ReviewForm from '../../components/review-form/review-form';
 import NotFoundPage from '../not-found-page/not-found-page';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import UserBlock from '../../components/user-block/user-block';
+import { setDataLoadedStatus } from '../../store/action';
+import { useEffect } from 'react';
+import { fetchFilmByID } from '../../store/api-actions';
+import LoadingScreen from '../loading-page/loading-screen';
 
 function ReviewPage(): JSX.Element {
   const filmId = Number(useParams().id);
 
-  const films = useAppSelector((state) => state.filteredFilms);
-  const film = films.find((currentFilm) => currentFilm.id === filmId);
+  const film = useAppSelector((state) => state.film);
+  const loadStatus = useAppSelector((state) => state.isDataLoaded);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setDataLoadedStatus(true));
+    dispatch(fetchFilmByID(filmId.toString()));
+    dispatch(setDataLoadedStatus(false));
+  }, [filmId, dispatch]);
+
+  if (loadStatus) {
+    return(<LoadingScreen />);
+  }
 
   if (!film) {
     return <NotFoundPage />;
@@ -49,7 +65,6 @@ function ReviewPage(): JSX.Element {
               </li>
             </ul>
           </nav>
-
           <UserBlock />
         </header>
 
