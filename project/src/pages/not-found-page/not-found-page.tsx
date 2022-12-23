@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './not-found-page.styles.css';
+import UserBlock from '../../components/user-block/user-block';
 
 function NotFoundPage(): JSX.Element {
   return (
@@ -13,23 +14,7 @@ function NotFoundPage(): JSX.Element {
           </Link>
         </div>
 
-        <ul className='user-block'>
-          <li className='user-block__item'>
-            <div className='user-block__avatar'>
-              <img
-                src='img/avatar.jpg'
-                alt='User avatar'
-                width='63'
-                height='63'
-              />
-            </div>
-          </li>
-          <li className='user-block__item'>
-            <a href='/#' className='user-block__link'>
-              Sign out
-            </a>
-          </li>
-        </ul>
+        <UserBlock />
       </header>
 
       <div className='error-page'>

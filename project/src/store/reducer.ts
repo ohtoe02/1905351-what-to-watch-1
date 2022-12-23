@@ -8,6 +8,7 @@ import {
   resetCardCount,
   resetFilmScreen,
   resetHomeScreen,
+  setAvatar,
   setDataLoadedStatus,
   setError
 } from './action';
@@ -21,6 +22,7 @@ import {
 
 type InitialState = {
   error: string | null;
+  avatar: string | null;
   films: Films;
   cardCount: number;
   filteredFilms: Films;
@@ -32,6 +34,7 @@ type InitialState = {
 
 const initState: InitialState = {
   error: null,
+  avatar: null,
   films: [],
   cardCount: 0,
   filteredFilms: [],
@@ -90,12 +93,13 @@ export const reducer = createReducer(initState, (builder) => {
     .addCase(setDataLoadedStatus, (state, action) => {
       state.isDataLoaded = action.payload;
     })
-
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
-
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(setAvatar, (state, action) => {
+      state.avatar = action.payload;
     });
 });
