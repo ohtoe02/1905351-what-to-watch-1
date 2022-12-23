@@ -1,8 +1,9 @@
-import Films from '../../types/Films';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 
-function Player({ films }: { films: Films }): JSX.Element {
+function Player(): JSX.Element {
   const id = Number(useParams().id);
+  const films = useAppSelector((state) => state.filteredFilms);
   const film = films.find((currentFilm) => currentFilm.id === id) ?? films[0];
 
   const navigate = useNavigate();

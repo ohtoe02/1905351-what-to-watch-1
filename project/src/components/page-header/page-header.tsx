@@ -15,7 +15,7 @@ function PageHeader(): JSX.Element {
         <li className='user-block__item'>
           <div className='user-block__avatar'>
             <img
-              src='img/avatar.jpg'
+              src='https://10.react.pages.academy/static/avatar/3.jpg'
               alt='User avatar'
               width='63'
               height='63'

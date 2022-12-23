@@ -2,22 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import { HomePageProps } from './types/Props';
-import films from './mocks/films';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import ErrorMessage from './components/error-message/error-message';
+import { checkAuthAction, fetchFilmsAction } from './store/api-actions';
+import promoMovie from './mocks/promo-movie';
+
+store.dispatch(fetchFilmsAction());
+store.dispatch(checkAuthAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 const homePageProps: HomePageProps = {
-  promoFilm: films[8]
+  promoFilm: promoMovie
 };
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App homePageProps={homePageProps} films={films} />
+      <ErrorMessage />
+      <App homePageProps={homePageProps} />
     </Provider>
   </React.StrictMode>
 );

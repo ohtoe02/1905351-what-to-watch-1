@@ -1,5 +1,4 @@
 import { Link, useParams } from 'react-router-dom';
-import Films from '../../types/Films';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PageHeader from '../../components/page-header/page-header';
 import PageFooter from '../../components/page-footer/page-footer';
@@ -8,10 +7,12 @@ import { useState } from 'react';
 import { MoviePageTabs } from '../../utils/constants';
 import MovieInformation from '../../components/movie-information/movie-information';
 import SimilarFilmList from '../../components/similar-film-list/similar-film-list';
+import { useAppSelector } from '../../hooks';
 
-function MoviePage({ films }: { films: Films }): JSX.Element {
+function MoviePage(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(MoviePageTabs[0]);
   const id = Number(useParams().id);
+  const films = useAppSelector((state) => state.filteredFilms);
   const film = films.find((currentFilm) => currentFilm.id === id);
 
   if (!film) {
