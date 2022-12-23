@@ -3,25 +3,44 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import PageHeader from '../../components/page-header/page-header';
 import PageFooter from '../../components/page-footer/page-footer';
 import MovieTabs from '../../components/movie-tabs/movie-tabs';
-import { useState } from 'react';
-import { MoviePageTabs } from '../../utils/constants';
+import { useEffect, useState } from 'react';
+import { AuthorizationStatus, MoviePageTabs } from '../../utils/constants';
 import MovieInformation from '../../components/movie-information/movie-information';
 import SimilarFilmList from '../../components/similar-film-list/similar-film-list';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import LoadingScreen from '../loading-page/loading-screen';
+import {
+  fetchCommentsByID,
+  fetchFilmByID,
+  fetchSimilarByID
+} from '../../store/api-actions';
+import { setDataLoadedStatus } from '../../store/action';
 
 function MoviePage(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(MoviePageTabs[0]);
   const id = Number(useParams().id);
-  const films = useAppSelector((state) => state.filteredFilms);
-  const film = films.find((currentFilm) => currentFilm.id === id);
+  const film = useAppSelector((state) => state.film);
+  const similarFilms = useAppSelector((state) => state.similar);
+  const isLoading = useAppSelector((state) => state.isDataLoaded);
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setDataLoadedStatus(true));
+    dispatch(fetchFilmByID(id.toString()));
+    dispatch(fetchCommentsByID(id.toString()));
+    dispatch(fetchSimilarByID(id.toString()));
+    dispatch(setDataLoadedStatus(false));
+  }, [id, dispatch]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   if (!film) {
     return <NotFoundPage />;
   }
-
-  const similarFilms = films.filter(
-    (item) => item.genre === film.genre && item.id !== film.id
-  );
 
   return (
     <>
@@ -65,12 +84,14 @@ function MoviePage(): JSX.Element {
                   <span>My list</span>
                   <span className='film-card__count'>9</span>
                 </Link>
-                <Link
-                  to={`/films/${id}/review`}
-                  className='btn film-card__button'
-                >
-                  Add review
-                </Link>
+                {authStatus === AuthorizationStatus.Auth && (
+                  <Link
+                    to={`/films/${id}/review`}
+                    className='btn film-card__button'
+                  >
+                    Add review
+                  </Link>
+                )}
               </div>
             </div>
           </div>

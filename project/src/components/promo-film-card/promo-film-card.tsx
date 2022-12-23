@@ -1,8 +1,20 @@
 import PageHeader from '../page-header/page-header';
 import { Link } from 'react-router-dom';
-import { Film } from '../../types/Film';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { fetchPromoFilm } from '../../store/api-actions';
 
-function PromoFilmCard({ promoFilm }: { promoFilm: Film }): JSX.Element {
+function PromoFilmCard(): JSX.Element {
+  const promoFilm = useAppSelector((state) => state.promoFilm);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchPromoFilm());
+  }, [dispatch]);
+
+  if (!promoFilm) {
+    return <></>;
+  }
+
   return (
     <section className='film-card'>
       <div className='film-card__bg'>
@@ -32,7 +44,11 @@ function PromoFilmCard({ promoFilm }: { promoFilm: Film }): JSX.Element {
             </p>
 
             <div className='film-card__buttons'>
-              <Link to={`/player/${promoFilm.id}`} className='btn btn--play film-card__button' type='button'>
+              <Link
+                to={`/player/${promoFilm.id}`}
+                className='btn btn--play film-card__button'
+                type='button'
+              >
                 <svg viewBox='0 0 19 19' width='19' height='19'>
                   <use xlinkHref='#play-s'></use>
                 </svg>

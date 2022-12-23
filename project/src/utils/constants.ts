@@ -30,6 +30,14 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+export enum APIRoutes {
+  Films = '/films',
+  Login = '/login',
+  Logout = '/logout',
+  Similar = '/similar',
+  Comments = '/comments'
+}
+
 export const DEFAULT_GENRE = 'All genres';
 export const MAX_CARDS_SHOWN = 8;
 export const SHOW_ERROR_TIME = 4000;
